@@ -1,0 +1,22 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Node/Frontend
+node_modules/
+dist/
+.env
+.env.local
+
+# Mac
+.DS_Store
+
+# Project specific
+backend.log
+uploads/
+outputs/
+backend/downloads/
+pinterest_tool/
