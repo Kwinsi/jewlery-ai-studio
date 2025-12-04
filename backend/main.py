@@ -18,8 +18,12 @@ app = FastAPI()
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False, # Disable credentials to allow wildcard origin
+    allow_origins=[
+        "http://localhost:5173",
+        "https://jewlery-ai-studio.vercel.app",
+        "https://jewlery-ai-studio.vercel.app/"
+    ],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
