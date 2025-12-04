@@ -29,11 +29,18 @@ lsof -ti:5173 | xargs kill -9 2>/dev/null
 
 # 2. Start Backend
 echo "⚙️  Starting Backend Server..."
-if [ -d "venv" ]; then
+# 2. Start Backend
+echo "⚙️  Starting Backend Server..."
+
+# Check if venv exists, if not create it
+if [ ! -d "venv" ]; then
+    echo "📦 Creating virtual environment..."
+    python3 -m venv venv
     source venv/bin/activate
+    echo "⬇️  Installing dependencies..."
+    pip install -r backend/requirements.txt
 else
-    echo "❌ Error: Virtual environment 'venv' not found."
-    exit 1
+    source venv/bin/activate
 fi
 
 # Run backend in background, log output to backend.log
