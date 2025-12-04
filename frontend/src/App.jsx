@@ -39,6 +39,22 @@ function App() {
     }
   }, [darkMode]);
 
+  // Connection Check
+  const [serverStatus, setServerStatus] = useState('checking'); // checking, online, offline
+
+  useEffect(() => {
+    const checkServer = async () => {
+      try {
+        await axios.get(`${API_URL}/`);
+        setServerStatus('online');
+      } catch (err) {
+        console.error("Server check failed:", err);
+        setServerStatus('offline');
+      }
+    };
+    checkServer();
+  }, []);
+
   // API Key Persistence REMOVED for security
   // useEffect(() => {
   //   localStorage.setItem('gemini_api_key', apiKey);
@@ -139,6 +155,11 @@ function App() {
       />
 
       <header className="border-b border-min-border dark:border-neutral-800 bg-white/80 dark:bg-black/80 backdrop-blur-sm sticky top-0 z-40">
+        {serverStatus === 'offline' && (
+          <div className="bg-red-500 text-white text-xs py-1 px-4 text-center font-medium">
+            ⚠️ Impossible de contacter le serveur. Le démarrage peut prendre 1 minute sur la version gratuite.
+          </div>
+        )}
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-black dark:bg-white text-white dark:text-black rounded-lg flex items-center justify-center">

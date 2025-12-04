@@ -19,10 +19,14 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False, # Disable credentials to allow wildcard origin
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+def health_check():
+    return {"status": "online", "message": "Jewelry AI Backend is running"}
 
 # API Key configuration
 # API_KEY = "..." # REMOVED FOR SECURITY
@@ -151,11 +155,9 @@ async def generate_image(
         Your task is to transform the input smartphone photo(s) into a STUNNING, AWARD-WINNING studio photograph.
         
         CRITICAL INSTRUCTIONS:
-        1. PRESERVE THE JEWELRY IDENTITY: The metal, stones, and design of the SOURCE IMAGE must remain exactly as they are. Do not hallucinate new details. This is the product being sold.
-        2. ADAPT COMPOSITION FROM REFERENCE: If a reference image is provided, you must understand its CREATIVE CONCEPT (e.g., frozen in ice, floating on water, on a rock) and place the SOURCE JEWELRY into that exact context.
-        3. REPLACE REFERENCE OBJECT: The reference image contains a placeholder piece of jewelry. You must REMOVE it and REPLACE it with the SOURCE JEWELRY, positioning it naturally within the reference's scene/composition.
-        4. LIGHTING & MOOD: Match the lighting, color grading, and mood of the reference image perfectly.
-        5. NO ARTIFICIAL SHINES: Do NOT add fake lens flares, starbursts, or excessive sparkles. The metal and stones should shine NATURALLY based on the lighting. Keep it realistic and high-end, not fantasy or surreal.
+        1. PRESERVE THE JEWELRY: The metal, stones, and design must remain exactly as they are in the input. Do not hallucinate new details on the jewelry itself.
+        2. REMOVE IMPERFECTIONS: Clean up dust, fingerprints, and scratches on the metal.
+        3. IGNORE REFERENCE CONTENT: If a reference image is provided, copy ONLY its lighting, background, and mood. IGNORE any text, watermarks, or the specific jewelry in the reference.
         """
         
         style_prompts = {
